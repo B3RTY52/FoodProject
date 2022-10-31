@@ -208,6 +208,15 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    //работа с ошибками на примере в функции:
+    const getResource = async (url) => {
+        const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+        }
+        return await res.json();
+    };
+
     const vegi = new MenuItem(
         'img/tabs/vegy.jpg',
         'vegy',
@@ -249,10 +258,23 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     forms.forEach(item => {
-        postData(item);
+        bindPostData(item);
     });
 
-    function postData(form) {
+    // async/await - парный оператор для работы с асинхронными ф-ями:
+    const postData = async (url, data) => {
+        const res = await fetch(url, { //await указывает коду, что надо ждать
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: data
+        });
+
+        return await res.json(); //также сначала дожидается результата
+    };
+
+    function bindPostData(form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -287,23 +309,27 @@ window.addEventListener('DOMContentLoaded', () => {
             //         showThanksModal(message.failure);
             //     }
             // });
+            // const object = {};
+            // formData.forEach(function (value, key) {
+            //     object[key] = value;
+            // });
             ///////////////
 
             //НА БОЛЕЕ НОВУЮ С FETCH:
 
-            const object = {};
-            formData.forEach(function (value, key) {
-                object[key] = value;
-            });
+            const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-            fetch('server.php', {
-                method: "POST",
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(object)
-            })
-                .then(data => data.text())
+
+            // заменим отдельной функцией
+            // fetch('server.php', {
+            //     method: "POST",
+            //     headers: {
+            //         'Content-type': 'application/json'
+            //     },
+            //     body: JSON.stringify(object)
+            // }) 
+
+            postData('http://localhost:3000/requests', json)
                 .then(data => {  //data - это данные, которые придут с сервера
                     console.log(data);
                     showThanksModal(message.succes);
@@ -342,7 +368,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
-    fetch('db.json')
+    fetch('http://localhost:3000/menu')
         .then(data => data.json())
         .then(res => console.log(res));
 
