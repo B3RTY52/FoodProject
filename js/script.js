@@ -217,38 +217,41 @@ window.addEventListener('DOMContentLoaded', () => {
         return await res.json();
     };
 
-    const vegi = new MenuItem(
-        'img/tabs/vegy.jpg',
-        'vegy',
-        "Фитнес",
-        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-        229,
-        '.menu__field .container',
-    );
-    vegi.renderItem();
+    // меняем на запрос с сервера:
+    getResource('http://localhost:3000/menu')
+        .then(data => {
+            //деструктурируем элемент в методе forEach:
+            data.forEach(({ img, altimg, title, descr, price }) => {
+                new MenuItem(img, altimg, title, descr, price, '.menu__field .container')
+                    .renderItem();
+            });
+        });
 
-    const elite = new MenuItem(
-        'img/tabs/elite.jpg',
-        'elite',
-        "Премиум",
-        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
-        550,
-        '.menu__field .container',
-    );
-    elite.renderItem();
 
-    const postnoe = new MenuItem(
-        'img/tabs/post.jpg',
-        'post',
-        "Постное",
-        'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
-        430,
-        '.menu__field .container',
-    );
-    postnoe.renderItem();
+    // метод реактивной верстки:
+    // getResource('http://localhost:3000/menu')
+    //     .then(data => createCard(data));
+    // function createCard(data) {
+    //     data.forEach(({ img, altimg, title, descr, price }) => {
+    //         const element = document.createElement('div');
+    //         element.classList.add('menu__item');
+    //         element.innerHTML = `
+    //         <img src="${img}" alt="${altimg}">
+    //         <h3 class="menu__item-subtitle">Меню “${title}”</h3>
+    //         <div class="menu__item-descr">${descr}</div>
+    //         <div class="menu__item-divider"></div>
+    //         <div class="menu__item-price">
+    //             <div class="menu__item-cost">Цена:</div>
+    //             <div class="menu__item-total"><span>${price}</span> грн/день</div>
+    //         </div>
+    //          `;
+    //         document.querySelector('.menu .container').append(element);
+    //     });
+    // }
+    ////////////////////////
+
 
     //FORMS
-
     const forms = document.querySelectorAll('form');
 
     const message = {
@@ -270,7 +273,7 @@ window.addEventListener('DOMContentLoaded', () => {
             },
             body: data
         });
-
+        // await ждет до 30 секунд по стандарту
         return await res.json(); //также сначала дожидается результата
     };
 
@@ -315,11 +318,10 @@ window.addEventListener('DOMContentLoaded', () => {
             // });
             ///////////////
 
-            //НА БОЛЕЕ НОВУЮ С FETCH:
-
+            // метод, который формирует массив из массивов по парам объекта:
             const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-
+            //НА БОЛЕЕ НОВУЮ С FETCH:
             // заменим отдельной функцией
             // fetch('server.php', {
             //     method: "POST",
@@ -329,6 +331,7 @@ window.addEventListener('DOMContentLoaded', () => {
             //     body: JSON.stringify(object)
             // }) 
 
+            // Еще Ha более новую:
             postData('http://localhost:3000/requests', json)
                 .then(data => {  //data - это данные, которые придут с сервера
                     console.log(data);

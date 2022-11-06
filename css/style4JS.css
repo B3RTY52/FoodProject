@@ -11,6 +11,10 @@
     animation-duration: 1s;
 }
 
+.menu__item-descr {
+    min-height: 135px
+}
+
 @keyframes fade {
     from {
         opacity: 0.1;
