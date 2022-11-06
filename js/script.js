@@ -174,14 +174,14 @@ window.addEventListener('DOMContentLoaded', () => {
             this.src = src;
             this.alt = alt;
             this.descr = descr;
-            this.price = price;
+            this.priceUSD = price;
             this.classes = classes;
             this.transfer = 27;
             this.parent = document.querySelector(parentSelector);
         }
 
         changeToUAH() {
-            this.price = this.price * this.transfer;
+            this.price = this.priceUSD * this.transfer;
         }
 
         renderItem() {
@@ -218,15 +218,23 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     // меняем на запрос с сервера:
-    getResource('http://localhost:3000/menu')
+    // getResource('http://localhost:3000/menu')
+    //     .then(data => {
+    //         //деструктурируем элемент в методе forEach:
+    //         data.forEach(({ img, altimg, title, descr, price }) => {
+    //             new MenuItem(img, altimg, title, descr, price, '.menu__field .container')
+    //                 .renderItem();
+    //         });
+    //     });
+
+    axios.get('http://localhost:3000/menu')
         .then(data => {
-            //деструктурируем элемент в методе forEach:
-            data.forEach(({ img, altimg, title, descr, price }) => {
-                new MenuItem(img, altimg, title, descr, price, '.menu__field .container')
-                    .renderItem();
+            data.data.forEach(({ img, altimg, title, descr, price }) => {
+                const item = new MenuItem(img, altimg, title, descr, price, '.menu__field .container');
+                item.changeToUAH();
+                item.renderItem();
             });
         });
-
 
     // метод реактивной верстки:
     // getResource('http://localhost:3000/menu')
