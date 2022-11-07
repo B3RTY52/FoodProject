@@ -178,6 +178,7 @@ window.addEventListener('DOMContentLoaded', () => {
             this.classes = classes;
             this.transfer = 27;
             this.parent = document.querySelector(parentSelector);
+            this.changeToUAH();
         }
 
         changeToUAH() {
@@ -230,9 +231,8 @@ window.addEventListener('DOMContentLoaded', () => {
     axios.get('http://localhost:3000/menu')
         .then(data => {
             data.data.forEach(({ img, altimg, title, descr, price }) => {
-                const item = new MenuItem(img, altimg, title, descr, price, '.menu__field .container');
-                item.changeToUAH();
-                item.renderItem();
+                new MenuItem(img, altimg, title, descr, price, '.menu__field .container')
+                    .renderItem();
             });
         });
 
