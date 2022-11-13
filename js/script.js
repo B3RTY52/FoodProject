@@ -383,4 +383,128 @@ window.addEventListener('DOMContentLoaded', () => {
         .then(data => data.json())
         .then(res => console.log(res));
 
+
+
+    // SLIDER 
+    // сначала получаем элементы управления:
+    const slides = document.querySelectorAll('.offer__slide'),
+        prevBtn = document.querySelector('.offer__slider-prev'),
+        nextBtn = document.querySelector('.offer__slider-next'),
+        total = document.querySelector('#total'),
+        current = document.querySelector('#current'),
+        slidesWrapper = document.querySelector('.offer__slider-wrapper'),
+        slidesField = document.querySelector('.offer__slider-inner'),
+        width = window.getComputedStyle(slidesWrapper).width;
+    let slideIndex = 1;
+    let offset = 0;
+
+    // VER.1
+    // поскольку количество слайдов у нас статично, то условие задаем отдельно:
+    function indexCounter() {  //оформим в функцию
+        if (slides.length < 10) {
+            total.textContent = `0${slides.length}`;
+            current.textContent = `0${slideIndex}`;
+        } else {
+            total.textContent = slides.length;
+            current.textContent = slideIndex;
+        }
+    }
+
+    indexCounter();
+
+    slidesField.style.width = 100 * slides.length + '%';
+    slidesField.style.display = 'flex';
+    slidesField.style.transition = '0.5s all';
+    slidesWrapper.style.overflow = 'hidden';
+
+    slides.forEach(slide => {
+        slide.style.width = width;
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (offset ==
+            +width.slice(0, width.length - 2) * (slides.length - 1)) {
+            offset = 0;
+        } else {
+            offset += +width.slice(0, width.length - 2);
+        }
+
+        slidesField.style.transform = `translateX(-${offset}px)`;
+
+        if (slideIndex == slides.length) {
+            slideIndex = 1;
+        } else {
+            slideIndex++;
+        }
+
+        indexCounter();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (offset == 0) {
+            offset =
+                +width.slice(0, width.length - 2) * (slides.length - 1);
+        } else {
+            offset -= +width.slice(0, width.length - 2);
+        }
+
+        slidesField.style.transform = `translateX(-${offset}px)`;
+
+        if (slideIndex == 1) {
+            slideIndex = slides.length;
+        } else {
+            slideIndex--;
+        }
+
+        indexCounter();
+    });
+
+    // // VER. 2 (easier):
+    // //запускаем первый слайд, чтобы он отображался:
+    // showSlides(slideIndex);
+
+    // // поскольку количество слайдов у нас статично, то условие задаем отдельно:
+    // if (slides.length < 10) {
+    //     total.textContent = `0${slides.length}`;
+    // } else {
+    //     total.textContent = slides.length;
+    // }
+
+    // // функция для отображения нужного слайда:
+    // function showSlides(n) {
+    //     if (n > slides.length) {
+    //         slideIndex = 1;
+    //     }
+
+    //     if (n < 1) {
+    //         slideIndex = slides.length;
+    //     }
+
+    //     slides.forEach(item => item.style.display = 'none');
+
+    //     slides[slideIndex - 1].style.display = 'block';
+
+    //     if (slideIndex < 10) {
+    //         current.textContent = `0${slideIndex}`;
+    //     } else {
+    //         current.textContent = slideIndex;
+    //     }
+    // }
+
+    // // функция для управления индексом слайда при переключении:
+    // function plusSlides(n) {
+    //     showSlides(slideIndex += n);
+    // }
+
+    // prevBtn.addEventListener('click', () => {
+    //     plusSlides(-1);
+    // });
+
+    // nextBtn.addEventListener('click', () => {
+    //     plusSlides(1);
+    // });
+
+
+
+
 });
