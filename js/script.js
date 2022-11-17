@@ -388,6 +388,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // SLIDER 
     // сначала получаем элементы управления:
     const slides = document.querySelectorAll('.offer__slide'),
+        slider = document.querySelector('.offer__slider'),
         prevBtn = document.querySelector('.offer__slider-prev'),
         nextBtn = document.querySelector('.offer__slider-next'),
         total = document.querySelector('#total'),
@@ -421,6 +422,42 @@ window.addEventListener('DOMContentLoaded', () => {
         slide.style.width = width;
     });
 
+    //ЭЛЕМЕНТЫ НАВИГАЦИИ ДЛЯ СЛАЙДЕРА:
+    slider.style.position = 'relative';
+    const indicators = document.createElement('ol');
+    indicators.classList.add('carousel-indicators');
+    slider.append(indicators);
+
+    const dots = [];
+
+    for (let i = 0; i < slides.length; i++) {
+        const dot = document.createElement('li');
+        dot.setAttribute('data-slide-to', i + 1);
+        dot.classList.add('dot');
+        indicators.append(dot);
+        if (i == 0) {
+            dot.style.opacity = 1;
+        }
+        dots.push(dot);
+    }
+
+    function dotsActivator(i) {
+        dots.forEach(dot => dot.style.opacity = '0.5');
+        dots[i - 1].style.opacity = 1;
+    }
+
+    dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            const slideTo = e.target.getAttribute('data-slide-to');
+
+            slideIndex = slideTo;
+            offset = +width.slice(0, width.length - 2) * (slideTo - 1);
+            slidesField.style.transform = `translateX(-${offset}px)`;
+            indexCounter();
+            dotsActivator(slideIndex);
+        });
+    });
+    //ПЕРЕКЛЮЧЕНИЕ ЧЕРЕЗ СТРЕЛОЧКИ:
     nextBtn.addEventListener('click', () => {
         if (offset ==
             +width.slice(0, width.length - 2) * (slides.length - 1)) {
@@ -438,6 +475,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         indexCounter();
+        dotsActivator(slideIndex);
     });
 
     prevBtn.addEventListener('click', () => {
@@ -457,6 +495,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         indexCounter();
+        dotsActivator(slideIndex);
     });
 
     // // VER. 2 (easier):
