@@ -446,12 +446,16 @@ window.addEventListener('DOMContentLoaded', () => {
         dots[i - 1].style.opacity = 1;
     }
 
+    function strToDigits(str) {
+        return +str.replace(/\D/g, '');
+    }
+
     dots.forEach(dot => {
         dot.addEventListener('click', (e) => {
             const slideTo = e.target.getAttribute('data-slide-to');
 
             slideIndex = slideTo;
-            offset = +width.slice(0, width.length - 2) * (slideTo - 1);
+            offset = strToDigits(width) * (slideTo - 1);
             slidesField.style.transform = `translateX(-${offset}px)`;
             indexCounter();
             dotsActivator(slideIndex);
@@ -460,10 +464,11 @@ window.addEventListener('DOMContentLoaded', () => {
     //ПЕРЕКЛЮЧЕНИЕ ЧЕРЕЗ СТРЕЛОЧКИ:
     nextBtn.addEventListener('click', () => {
         if (offset ==
-            +width.slice(0, width.length - 2) * (slides.length - 1)) {
+            // +width.slice(0, width.length - 2) * (slides.length - 1);
+            strToDigits(width) * (slides.length - 1)) {
             offset = 0;
         } else {
-            offset += +width.slice(0, width.length - 2);
+            offset += strToDigits(width);
         }
 
         slidesField.style.transform = `translateX(-${offset}px)`;
@@ -480,10 +485,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     prevBtn.addEventListener('click', () => {
         if (offset == 0) {
-            offset =
-                +width.slice(0, width.length - 2) * (slides.length - 1);
+            offset = strToDigits(width) * (slides.length - 1);
         } else {
-            offset -= +width.slice(0, width.length - 2);
+            offset -= strToDigits(width);
         }
 
         slidesField.style.transform = `translateX(-${offset}px)`;
@@ -542,8 +546,5 @@ window.addEventListener('DOMContentLoaded', () => {
     // nextBtn.addEventListener('click', () => {
     //     plusSlides(1);
     // });
-
-
-
 
 });
