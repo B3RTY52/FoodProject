@@ -2,13 +2,14 @@
   "name": "food",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./js/script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Albert",
   "license": "ISC",
   "devDependencies": {
-    "json-server": "^0.17.0"
+    "json-server": "^0.17.0",
+    "webpack-cli": "^5.0.1"
   }
 }
