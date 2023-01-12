@@ -718,7 +718,7 @@ window.addEventListener('DOMContentLoaded', () => {
     (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_0__["default"])();
     (0,_modules_calc__WEBPACK_IMPORTED_MODULE_1__["default"])();
     (0,_modules_cards__WEBPACK_IMPORTED_MODULE_2__["default"])();
-    (0,_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalTimerID);
+    (0,_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])('form', modalTimerID);
     (0,_modules_modal__WEBPACK_IMPORTED_MODULE_4__["default"])('[data-modal]', '.modal', modalTimerID);
     (0,_modules_slider__WEBPACK_IMPORTED_MODULE_5__["default"])();
     (0,_modules_timer__WEBPACK_IMPORTED_MODULE_6__["default"])();
