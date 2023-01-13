@@ -1,3 +1,5 @@
+import { getResource } from "../services/services";
+
 function cards() {
     class MenuItem {
         constructor(src, alt, title,
@@ -41,9 +43,9 @@ function cards() {
         }
     }
 
-    axios.get('http://localhost:3000/menu')
+    getResource('http://localhost:3000/menu')
         .then(data => {
-            data.data.forEach(({ img, altimg, title, descr, price }) => {
+            data.forEach(({ img, altimg, title, descr, price }) => {
                 new MenuItem(img, altimg, title, descr, price, '.menu__field .container')
                     .renderItem();
             });
