@@ -1,4 +1,6 @@
-function tabs(tabsSelector, tabsContentSelector, tabsParentSelector, activeClass) {
+// function tabs() {
+function tabs(tabsSelector, tabsContentSelector,
+    tabsParentSelector, activeClass) {
     const tabs = document.querySelectorAll(tabsSelector),
         tabsContent = document.querySelectorAll(tabsContentSelector),
         tabsParent = document.querySelector(tabsParentSelector);
@@ -26,7 +28,7 @@ function tabs(tabsSelector, tabsContentSelector, tabsParentSelector, activeClass
     tabsParent.addEventListener('click', (e) => {
         const target = e.target;
 
-        if (target && target.classList.contains(tabsContentSelector.slice(1))) {
+        if (target && target.classList.contains(tabsSelector.slice(1))) {
             tabs.forEach((item, i) => {
                 if (target == item) {
                     hideTabContent();
